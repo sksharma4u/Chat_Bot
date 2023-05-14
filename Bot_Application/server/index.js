@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path')
     //Require my Env file
 const dotenv = require('dotenv');
+
 const envPath = path.resolve(__dirname, '../.env');
 
 dotenv.config({ path: envPath });

@@ -1,50 +1,50 @@
-var count = 0;
+var valid = false;
 const message = require('../message');
 const information = require('./QuestionBot')
+const finalVerification = require('./dataVerification');
+
 const handleReplyMessage = async(body) => {
     var recievedMessage = body.Body;
     recievedMessage = recievedMessage.toLowerCase();
     const senderId = body.From;
+
     const text = "";
     const userId = "";
+
     const response = {
         text,
-        userId
+        userId,
     };
 
 
     console.log(recievedMessage);
 
-    if (recievedMessage == "reset" || (recievedMessage == "revised" && count == 1)) {
+    if (recievedMessage == "reset" || (recievedMessage == "revised" && valid == true)) {
         information.clearResponse();
-        count = 0;
+        valid = false;
         response.text = message.message;
         response.userId = senderId
 
         return response;
 
-    } else if (recievedMessage == "create") {
-        count++;
-        response.text = "What is your Name:";
-        response.userId = senderId
-
-        return response;
-    } else if (recievedMessage == "confirmed" && count == 1) {
+    } else if (recievedMessage == "confirmed" && valid == true) {
 
         response.text = message.ThankYouMessage;
         response.userId = senderId;
-        count = 0;
+        valid = false;
+        information.clearResponse();
+
         return response;
 
-    } else if (count == 1) {
-
+    } else if (recievedMessage == "create" || valid == true) {
+        valid = true;
         const serviceReply = await information.userResponse(senderId, recievedMessage);
 
         response.text = serviceReply.text;
         response.userId = serviceReply.userId;
-        return response;
 
-    } else if (recievedMessage == "hii" || recievedMessage == "hello" || recievedMessage == "hey") {
+        return response;
+    } else if (recievedMessage == "hii" || recievedMessage == "hello" || recievedMessage == "hey" || recievedMessage == "hi") {
 
         response.text = message.message;
         response.userId = senderId

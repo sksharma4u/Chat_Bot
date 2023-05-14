@@ -1,4 +1,6 @@
+const producer = require('../../rabbitmq_microservices/rabbitmq_producer')
 const prompts = [
+
     'what is your Name?',
     'Mentioned your qualification :',
     'About your Skill set:',
@@ -8,46 +10,69 @@ const prompts = [
 
 const answers = {};
 
+const Name = "";
+const Qualification = "";
+const Skills = "";
+const Experience = "";
+const Institute = "";
+
+let verifyInformation = {
+
+    Name,
+    Qualification,
+    Skills,
+    Experience,
+    Institute
+};
+
 function clearResponse() {
     Object.keys(answers).forEach((key) => {
         delete answers[key];
     });
 }
+
 async function userResponse(user, response) {
-    console.log("Hello3")
+    if (response == "create") {
+        return {
+            text: "What is your name :",
+            userId: user
+        }
+    }
     const currentPrompt = prompts[Object.keys(answers).length];
     answers[currentPrompt] = response;
 
     if (Object.keys(answers).length < prompts.length) {
         const nextPrompt = prompts[Object.keys(answers).length];
-        response.text = nextPrompt;
-        response.userId
         return { text: nextPrompt, userId: user }
 
 
     } else {
-        const verifyInformation = {
-            "Name": answers['what is your Name?'],
-            "Qualification": answers['Mentioned your qualification :'],
-            "Your Skills": answers['About your Skill set:'],
-            "Work Experience:": answers['Work Experince if No then please type No:'],
-            "Institure Name:": answers['Institute Name:']
-        }
+
+        verifyInformation.Name = answers['what is your Name?']
+        verifyInformation.Qualification = answers['Mentioned your qualification :']
+        verifyInformation.Skills = answers['About your Skill set:']
+        verifyInformation.Experience = answers['Work Experince if No then please type No:']
+        verifyInformation.Institute = answers['Institute Name:']
 
         const infomation = `Name : ${answers['what is your Name?']}\nQualification : ${answers['Mentioned your qualification :']}\nYour Skills : ${answers['About your Skill set:']}\nWork Experience : ${answers['Work Experince if No then please type No:']}\nInstiture Name:${answers['Institute Name:']}\n`
 
-        console.log(infomation)
+        const finalData = "Here is your Given  Details : \n\n" + infomation + "\nFor Moving Forward Please Type CONFIRMED : ";
 
-        const finalData = "Please verify your Details: \n\n" + infomation + "\n Reply in Confirmed or Revised";
-        console.log('All answer recieved', finalData);
+        console.log('-- -- -- -- -- -- -- - ')
+        console.log(verifyInformation);
+        producer.verificationGranted(JSON.stringify(verifyInformation));
+
+        console.log('-----------------------');
         return { text: finalData, userId: user }
 
-
     }
-
 }
+
+
+
 
 module.exports = {
     userResponse,
-    clearResponse
+    clearResponse,
+    verifyInformation
 }
