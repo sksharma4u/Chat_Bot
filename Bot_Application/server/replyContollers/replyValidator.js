@@ -1,7 +1,8 @@
 var valid = false;
 const message = require('../message');
 const information = require('./QuestionBot')
-const finalVerification = require('./dataVerification');
+const producer = require('../../rabbitmq_microservices/rabbitmq_producer')
+
 
 const handleReplyMessage = async(body) => {
     var recievedMessage = body.Body;
@@ -16,6 +17,24 @@ const handleReplyMessage = async(body) => {
         userId,
     };
 
+    if ('Latitude' in body) {
+        const Latitude = "";
+        const Longitude = "";
+
+        const Location = {
+            Latitude: body.Latitude,
+            Longitude: body.Longitude
+        };
+
+        producer.verificationGranted(JSON.stringify(Location));
+
+        response.text = message.Doctors;
+        response.userId = senderId;
+        valid = true;
+
+        return response;
+
+    }
 
     console.log(recievedMessage);
 
@@ -33,10 +52,9 @@ const handleReplyMessage = async(body) => {
         response.userId = senderId;
         valid = false;
         information.clearResponse();
-
         return response;
 
-    } else if (recievedMessage == "create" || valid == true) {
+    } else if (valid == true) {
         valid = true;
         const serviceReply = await information.userResponse(senderId, recievedMessage);
 

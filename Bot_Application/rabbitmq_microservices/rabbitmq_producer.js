@@ -16,9 +16,6 @@ const verificationGranted = (response) => {
             channel.assertQueue(Queue);
 
             //send message
-            console.log('---------------------')
-            console.log(response);
-            console.log('---------------------')
             const msg = response;
 
             console.log(msg);

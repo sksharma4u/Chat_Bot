@@ -11,28 +11,22 @@ const threeNumber = `\u{0033}\u{FE0F}\u{20E3}`
 
 
 const message = `
-Welcome to our Resume Chat Bot!${clap}
+Hello! Welcome to our medical clinic 👋 To schedule a doctor appointment, we need to verify your location. 🌍 Please share your live location with us${String.fromCodePoint(0x1F4CD)} so we can assist you better.
 
-I'm here to assist you in creating and retrieving resumes quickly and efficiently.${String.fromCodePoint(0x1F4D1)}
-        
-With just a few simple commands, you'll be able to craft a professional resume or retrieve an existing one.
-        
-To get started, here are the available commands:  ${String.fromCodePoint(0x1F4DD)}
-
-${oneNumber} Create:This command allows you to create a new resume.
-
-${twoNumber} Get: This command enables you to retrieve a previously created resume.
-
-${threeNumber} Reset : This command allow you to reset/start the whole bot`
+Thank you! 🙏😊`
 
 
-const ThankYouMessage = `Thank you for providing the necessary information! ${smile}${smile}
-We have received your responses ${String.fromCodePoint(0x2714)} and will now proceed to prepare your resume ${String.fromCodePoint(0x1F4BB)}. 
-Please wait for a moment ${String.fromCodePoint(0x23F3)} while we generate your personalized resume ${String.fromCodePoint(0x1F4D1)}.`;
+const ThankYouMessage = `Thank you for providing the necessary information! 🙏 Please wait for a moment while we generate your receipt.⏳`;
+const Doctors = `These are some doctors present nearby your location. Please type the full name of your doctor according to your need:
+1. Dr. Rajan Singh
+2. Dr. Manju Rawat
+3. Dr. Hari Prasad
 
+Enter your Doctor Name:`
 
 
 module.exports = {
     message,
-    ThankYouMessage
+    ThankYouMessage,
+    Doctors
 }

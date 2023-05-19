@@ -10,10 +10,8 @@ dotenv.config({ path: envPath });
 const bodyParser = require('body-parser');
 const app = express();
 const replyService = require('./replyContollers/replyService');
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 
 const PORT = process.env.PORT;
 

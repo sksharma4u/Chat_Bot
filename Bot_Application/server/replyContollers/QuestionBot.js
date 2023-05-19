@@ -1,28 +1,25 @@
 const producer = require('../../rabbitmq_microservices/rabbitmq_producer')
 const prompts = [
-
-    'what is your Name?',
-    'Mentioned your qualification :',
-    'About your Skill set:',
-    'Work Experince if No then please type No:',
-    'Institute Name:'
+    'Doctor Name:',
+    'Patient Name:',
+    'Gender: Male/Female/Other:',
+    'How old are you:',
+    'Enter Your Mobile Number:',
 ]
 
 const answers = {};
-
-const Name = "";
-const Qualification = "";
-const Skills = "";
-const Experience = "";
-const Institute = "";
+const Doctor = "";
+const Patient_Name = "";
+const Gender = "";
+const Age = "";
+const Mobile_Number = "";
 
 let verifyInformation = {
-
-    Name,
-    Qualification,
-    Skills,
-    Experience,
-    Institute
+    Doctor,
+    Patient_Name,
+    Gender,
+    Age,
+    Mobile_Number,
 };
 
 function clearResponse() {
@@ -32,12 +29,7 @@ function clearResponse() {
 }
 
 async function userResponse(user, response) {
-    if (response == "create") {
-        return {
-            text: "What is your name :",
-            userId: user
-        }
-    }
+
     const currentPrompt = prompts[Object.keys(answers).length];
     answers[currentPrompt] = response;
 
@@ -45,16 +37,14 @@ async function userResponse(user, response) {
         const nextPrompt = prompts[Object.keys(answers).length];
         return { text: nextPrompt, userId: user }
 
-
     } else {
+        verifyInformation.Doctor = answers['Doctor Name:']
+        verifyInformation.Patient_Name = answers['Patient Name:']
+        verifyInformation.Gender = answers['Gender: Male/Female/Other:']
+        verifyInformation.Age = answers['How old are you:']
+        verifyInformation.Mobile_Number = answers['Enter Your Mobile Number:']
 
-        verifyInformation.Name = answers['what is your Name?']
-        verifyInformation.Qualification = answers['Mentioned your qualification :']
-        verifyInformation.Skills = answers['About your Skill set:']
-        verifyInformation.Experience = answers['Work Experince if No then please type No:']
-        verifyInformation.Institute = answers['Institute Name:']
-
-        const infomation = `Name : ${answers['what is your Name?']}\nQualification : ${answers['Mentioned your qualification :']}\nYour Skills : ${answers['About your Skill set:']}\nWork Experience : ${answers['Work Experince if No then please type No:']}\nInstiture Name:${answers['Institute Name:']}\n`
+        const infomation = `Doctor Name : ${answers['Doctor Name:']}\nPatient Name : ${answers['Patient Name:']}\nGender : ${answers['Gender: Male/Female/Other:']}\nAge : ${answers['How old are you:']}\nMobile Number : ${answers['Enter Your Mobile Number:']}`
 
         const finalData = "Here is your Given  Details : \n\n" + infomation + "\nFor Moving Forward Please Type CONFIRMED : ";
 
